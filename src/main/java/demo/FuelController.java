@@ -2,7 +2,6 @@ package demo;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.chart.ScatterChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -113,13 +112,13 @@ public class FuelController {
 
     }
 
-    public void onURClick(ActionEvent actionEvent) {
-        setLanguage(new Locale("ur", "PA"));
+    public void onJAClick(ActionEvent actionEvent) {
+        setLanguage(new Locale("ja", "JP"));
 
     }
 
-    public void onVIClick(ActionEvent actionEvent) {
-        setLanguage(new Locale("vi", "VI"));
+    public void onFAClick(ActionEvent actionEvent) {
+        setLanguage(new Locale("fa", "IR"));
 
     }
 

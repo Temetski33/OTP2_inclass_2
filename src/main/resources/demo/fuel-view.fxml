@@ -25,6 +25,6 @@
 
     <Button text="EN!" onAction="#onENClick" />
     <Button text="FR!" onAction="#onFRClick" />
-    <Button text="UR!" onAction="#onURClick" />
-    <Button text="VI!" onAction="#onVIClick" />
+    <Button text="JA!" onAction="#onJAClick" />
+    <Button text="FA!" onAction="#onFAClick" />
 </VBox>
