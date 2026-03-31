@@ -18,17 +18,22 @@ public class FuelController {
     private Label welcomeText;
 
     @FXML
-    private Label lblWeight;
+    private Label lblDistance;
 
     @FXML
-    private Label lblHeight;
+    private Label lblConsumption;
 
     @FXML
-    private TextField tfWeight;
-
+    private Label lblPrice;
 
     @FXML
-    private TextField tfHeight;
+    private TextField tfDistance;
+
+    @FXML
+    private TextField tfConsumption;
+
+    @FXML
+    private TextField tfPrice;
 
     @FXML
     private Button btnCalculate;
@@ -52,8 +57,8 @@ public class FuelController {
         try {
 
             rb = ResourceBundle.getBundle("messages", locale);
-            lblWeight.setText(rb.getString("weight"));
-            lblHeight.setText(rb.getString("height"));
+            lblDistance.setText(rb.getString("weight"));
+            lblConsumption.setText(rb.getString("height"));
             btnCalculate.setText(rb.getString("calculate"));
 
             // show the time
@@ -69,23 +74,24 @@ public class FuelController {
 
 
     public void onCalculateClick(ActionEvent actionEvent) {
-        if (tfWeight == null || tfHeight == null) {
+        if (tfDistance == null || tfConsumption == null) {
             System.err.println("TextFields are empty");
             return;
         }
 
         try {
             // Parse weight and height values
-            double weight = Double.parseDouble(tfWeight.getText());
-            double height = Double.parseDouble(tfHeight.getText());
+            double distance = Double.parseDouble(tfDistance.getText());
+            double consumption = Double.parseDouble(tfConsumption.getText());
+            double price = Double.parseDouble(tfPrice.getText());
 
             // Convert height from centimeters to meters
-            height = height / 100.0;  // Convert to meters
+            consumption = consumption / 100.0;  // Convert to meters
 
-            System.out.println("Weight: " + weight + " kg, Height: " + height + " m");
+            System.out.println("Weight: " + distance + " kg, Height: " + consumption + " m");
 
             // Calculate BMI using the formula: BMI = weight / (height * height)
-            double bmi = weight / (height * height);
+            double bmi = distance / (consumption * consumption);
             System.out.println("Raw BMI: " + bmi);
 
             // Format the BMI value to 2 decimal places

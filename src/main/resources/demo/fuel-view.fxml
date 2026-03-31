@@ -14,10 +14,12 @@
     </padding>
 
 
-    <Label fx:id="lblWeight" text="Weight"/>
-    <TextField fx:id="tfWeight"/>
-    <Label fx:id="lblHeight" text="Height" />
-    <TextField fx:id="tfHeight"/>
+    <Label fx:id="lblDistance" text="Distance"/>
+    <TextField fx:id="tfDistance"/>
+    <Label fx:id="lblConsumption" text="Consumption" />
+    <TextField fx:id="tfConsumption"/>
+    <Label fx:id="lblPrice" text="Price" />
+    <TextField fx:id="tfPrice"/>
     <Button fx:id="btnCalculate" onAction="#onCalculateClick"/>
     <Label fx:id="lblResult"/>
 
