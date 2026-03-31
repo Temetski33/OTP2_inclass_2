@@ -14,6 +14,7 @@
     </padding>
 
 
+    <Label fx:id="lblTitle" text="Title"/>
     <Label fx:id="lblDistance" text="Distance"/>
     <TextField fx:id="tfDistance"/>
     <Label fx:id="lblConsumption" text="Consumption" />

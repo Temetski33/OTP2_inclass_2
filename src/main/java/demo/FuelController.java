@@ -15,7 +15,7 @@ import java.util.ResourceBundle;
 
 public class FuelController {
     @FXML
-    private Label welcomeText;
+    private Label lblTitle;
 
     @FXML
     private Label lblDistance;
@@ -57,6 +57,7 @@ public class FuelController {
         try {
 
             rb = ResourceBundle.getBundle("messages", locale);
+            lblTitle.setText(rb.getString("title"));
             lblDistance.setText(rb.getString("distance"));
             lblConsumption.setText(rb.getString("consumption"));
             lblPrice.setText(rb.getString("price"));
