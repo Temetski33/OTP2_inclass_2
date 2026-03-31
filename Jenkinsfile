@@ -28,18 +28,7 @@ pipeline {
             }
         }
 
-        stage('Generate Report') {
-            steps {
-                bat 'mvn jacoco:report'
-            }
-        }
 
-
-        stage('Publish Coverage Report') {
-            steps {
-                jacoco()
-            }
-        }
 
         stage('Build Docker Image') {
                     steps {
