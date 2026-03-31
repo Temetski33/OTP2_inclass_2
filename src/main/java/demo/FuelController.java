@@ -59,6 +59,7 @@ public class FuelController {
             rb = ResourceBundle.getBundle("messages", locale);
             lblDistance.setText(rb.getString("distance"));
             lblConsumption.setText(rb.getString("consumption"));
+            lblPrice.setText(rb.getString("price"));
             btnCalculate.setText(rb.getString("calculate"));
 
             // show the time
