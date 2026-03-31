@@ -107,8 +107,10 @@ public class FuelController {
             String totalCostString = df.format(totalCost);
             System.out.println("Formatted cost: " + totalCostString);
 
+            String combinedResultsString = totalFuelString + ", " + totalCostString;
+
             // Fuel value to the result message
-            lblResult.setText(rb.getString("result") + " " + totalFuelString);
+            lblResult.setText(rb.getString("result") + " " + combinedResultsString);
 
         } catch (NumberFormatException e) {
             // Handle invalid input
