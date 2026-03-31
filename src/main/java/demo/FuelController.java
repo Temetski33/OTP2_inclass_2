@@ -57,8 +57,8 @@ public class FuelController {
         try {
 
             rb = ResourceBundle.getBundle("messages", locale);
-            lblDistance.setText(rb.getString("weight"));
-            lblConsumption.setText(rb.getString("height"));
+            lblDistance.setText(rb.getString("distance"));
+            lblConsumption.setText(rb.getString("consumption"));
             btnCalculate.setText(rb.getString("calculate"));
 
             // show the time
@@ -74,7 +74,7 @@ public class FuelController {
 
 
     public void onCalculateClick(ActionEvent actionEvent) {
-        if (tfDistance == null || tfConsumption == null) {
+        if (tfDistance == null || tfConsumption == null || tfPrice == null) {
             System.err.println("TextFields are empty");
             return;
         }
@@ -85,22 +85,30 @@ public class FuelController {
             double consumption = Double.parseDouble(tfConsumption.getText());
             double price = Double.parseDouble(tfPrice.getText());
 
-            // Convert height from centimeters to meters
-            consumption = consumption / 100.0;  // Convert to meters
+            // Convert consumption from per 100km to per 1km
+            consumption = consumption / 100.0;
 
-            System.out.println("Weight: " + distance + " kg, Height: " + consumption + " m");
+            System.out.println("Distance: " + distance + " km, Consumption: " + consumption + " " + ", Price: " + price);
 
-            // Calculate BMI using the formula: BMI = weight / (height * height)
-            double bmi = distance / (consumption * consumption);
-            System.out.println("Raw BMI: " + bmi);
+            // Calculate total fuel
+            double totalFuel = distance * consumption;
+            System.out.println("Total fuel raw: " + totalFuel);
 
-            // Format the BMI value to 2 decimal places
+            // Format the fuel value to 2 decimal places
             DecimalFormat df = new DecimalFormat("#0.00");
-            String bmiString = df.format(bmi);
-            System.out.println("Formatted BMI: " + bmiString);
+            String totalFuelString = df.format(totalFuel);
+            System.out.println("Formatted fuel: " + totalFuelString);
 
-            // Directly concatenate the BMI value to the result message
-            lblResult.setText(rb.getString("result") + " " + bmiString);
+            // Calculate total cost
+            double totalCost = totalFuel * price;
+            System.out.println("Total cost raw: " + totalCost);
+
+            // Format the cost value to 2 decimal places
+            String totalCostString = df.format(totalCost);
+            System.out.println("Formatted cost: " + totalCostString);
+
+            // Fuel value to the result message
+            lblResult.setText(rb.getString("result") + " " + totalFuelString);
 
         } catch (NumberFormatException e) {
             // Handle invalid input
