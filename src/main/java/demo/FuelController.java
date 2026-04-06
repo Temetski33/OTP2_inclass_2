@@ -72,7 +72,7 @@ public class FuelController {
             localizationService.loadStrings(locale.toString()); // e.g. "en_US"
 
             // remove later for db
-            lblTitle.setText(rb.getString("title"));
+            lblTitle.setText(localizationService.getString("title"));
             lblDistance.setText(rb.getString("distance"));
             lblConsumption.setText(rb.getString("consumption"));
             lblPrice.setText(rb.getString("price"));
