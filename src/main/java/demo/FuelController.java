@@ -1,5 +1,7 @@
 package demo;
 
+import demo.model.CalculationRecord;
+import demo.service.CalculationService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -45,6 +47,9 @@ public class FuelController {
     private Label lblLocalTime; // New label for showing local time
 
     private ResourceBundle rb;
+
+    private final CalculationService calculationService = new CalculationService();
+
 
 
     public void initialize() {
@@ -113,6 +118,22 @@ public class FuelController {
 
             // Fuel value to the result message
             lblResult.setText(rb.getString("result") + " " + combinedResultsString);
+
+            // Create record for saving
+            String language = rb.getLocale().toString();
+
+            CalculationRecord record = new CalculationRecord(
+                    distance,
+                    consumption,
+                    price,
+                    totalFuel,
+                    totalCost,
+                    language
+            );
+
+            // Save to database
+            calculationService.saveCalculation(record);
+
 
         } catch (NumberFormatException e) {
             // Handle invalid input
