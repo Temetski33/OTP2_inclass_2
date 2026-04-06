@@ -2,6 +2,7 @@ package demo;
 
 import demo.model.CalculationRecord;
 import demo.service.CalculationService;
+import demo.service.LocalizationService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -50,6 +51,9 @@ public class FuelController {
 
     private final CalculationService calculationService = new CalculationService();
 
+    private final LocalizationService localizationService = new LocalizationService();
+
+
 
 
     public void initialize() {
@@ -59,23 +63,29 @@ public class FuelController {
 
     private void setLanguage(Locale locale) {
         lblResult.setText("");
-        try {
 
+        try {
+            // remove later for db
             rb = ResourceBundle.getBundle("messages", locale);
+
+            // Load DB localization
+            localizationService.loadStrings(locale.toString()); // e.g. "en_US"
+
+            // remove later for db
             lblTitle.setText(rb.getString("title"));
             lblDistance.setText(rb.getString("distance"));
             lblConsumption.setText(rb.getString("consumption"));
             lblPrice.setText(rb.getString("price"));
             btnCalculate.setText(rb.getString("calculate"));
 
-            // show the time
             displayLocalTime(locale);
 
-        }catch(MissingResourceException e) {
+        } catch (MissingResourceException e) {
             e.printStackTrace();
-            lblResult.setText("Error loading resources error");
+            lblResult.setText("Error loading resources");
         }
     }
+
 
 
 

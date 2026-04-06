@@ -42,8 +42,12 @@ public class LocalizationService {
 
 
     public String getString(String key) {
+        if (cache.isEmpty()) {
+            System.err.println("Warning: Localization strings not loaded. Call loadStrings(language) first.");
+        }
         return cache.getOrDefault(key, "??" + key + "??");
     }
+
 
     public Set<String> getAllKeys() {
         return cache.keySet();
