@@ -47,7 +47,7 @@ public class FuelController {
     @FXML
     private Label lblLocalTime; // New label for showing local time
 
-    private ResourceBundle rb;
+    private Locale currentLocale;
 
     private final CalculationService calculationService = new CalculationService();
 
@@ -62,29 +62,29 @@ public class FuelController {
     }
 
     private void setLanguage(Locale locale) {
+        currentLocale = locale;
         lblResult.setText("");
 
-        try {
-            // remove later for db
-            rb = ResourceBundle.getBundle("messages", locale);
 
+        try {
             // Load DB localization
             localizationService.loadStrings(locale.toString()); // e.g. "en_US"
 
-            // remove later for db
+            // Set all UI labels from DB
             lblTitle.setText(localizationService.getString("title"));
-            lblDistance.setText(rb.getString("distance"));
-            lblConsumption.setText(rb.getString("consumption"));
-            lblPrice.setText(rb.getString("price"));
-            btnCalculate.setText(rb.getString("calculate"));
+            lblDistance.setText(localizationService.getString("distance"));
+            lblConsumption.setText(localizationService.getString("consumption"));
+            lblPrice.setText(localizationService.getString("price"));
+            btnCalculate.setText(localizationService.getString("calculate"));
 
             displayLocalTime(locale);
 
-        } catch (MissingResourceException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             lblResult.setText("Error loading resources");
         }
     }
+
 
 
 
@@ -127,10 +127,10 @@ public class FuelController {
             String combinedResultsString = totalFuelString + ", " + totalCostString;
 
             // Fuel value to the result message
-            lblResult.setText(rb.getString("result") + " " + combinedResultsString);
+            lblResult.setText(localizationService.getString("result") + " " + combinedResultsString);
 
             // Create record for saving
-            String language = rb.getLocale().toString();
+            String language = currentLocale.toString();
 
             CalculationRecord record = new CalculationRecord(
                     distance,
@@ -147,7 +147,8 @@ public class FuelController {
 
         } catch (NumberFormatException e) {
             // Handle invalid input
-            lblResult.setText(rb.getString("invalid"));
+            lblResult.setText(localizationService.getString("invalid"));
+
         }
     }
 
@@ -177,6 +178,7 @@ public class FuelController {
         LocalTime currentTime = LocalTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm:ss", locale);
         String formattedTime = currentTime.format(formatter);
-        lblLocalTime.setText(rb.getString("localTime") + " " + formattedTime);
+        lblLocalTime.setText(localizationService.getString("localTime") + " " + formattedTime);
+
     }
 }
