@@ -1,0 +1,91 @@
+package demo;
+
+import demo.model.CalculationRecord;
+import demo.service.CalculationService;
+import demo.service.LocalizationService;
+import javafx.event.ActionEvent;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+
+import java.util.Locale;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
+class FuelControllerTest {
+
+    private FuelController controller;
+
+    // Mocked services
+    private CalculationService calculationService;
+    private LocalizationService localizationService;
+
+    // UI elements
+    private Label lblResult;
+    private TextField tfDistance;
+    private TextField tfConsumption;
+    private TextField tfPrice;
+
+    @BeforeEach
+    void setUp() {
+        controller = new FuelController();
+
+        // Mock services
+        calculationService = mock(CalculationService.class);
+        localizationService = mock(LocalizationService.class);
+
+        // Inject mocks using reflection (because fields are private & final)
+        TestUtils.setField(controller, "calculationService", calculationService);
+        TestUtils.setField(controller, "localizationService", localizationService);
+
+        // Fake UI elements
+        lblResult = new Label();
+        tfDistance = new TextField();
+        tfConsumption = new TextField();
+        tfPrice = new TextField();
+
+        TestUtils.setField(controller, "lblResult", lblResult);
+        TestUtils.setField(controller, "tfDistance", tfDistance);
+        TestUtils.setField(controller, "tfConsumption", tfConsumption);
+        TestUtils.setField(controller, "tfPrice", tfPrice);
+
+        // Default localization strings
+        when(localizationService.getString("result")).thenReturn("Result:");
+        when(localizationService.getString("invalid")).thenReturn("Invalid input");
+    }
+
+    @Test
+    void testOnCalculateClick_validInput_updatesLabelAndSavesRecord() {
+        tfDistance.setText("100");
+        tfConsumption.setText("5");
+        tfPrice.setText("2");
+
+        controller.onCalculateClick(new ActionEvent());
+
+        assertEquals("Result: 5.00, 10.00", lblResult.getText());
+
+        ArgumentCaptor<CalculationRecord> captor = ArgumentCaptor.forClass(CalculationRecord.class);
+        verify(calculationService).saveCalculation(captor.capture());
+
+        CalculationRecord record = captor.getValue();
+        assertEquals(100, record.getDistance());
+        assertEquals(0.05, record.getConsumption());
+        assertEquals(2, record.getPrice());
+        assertEquals(5.0, record.getTotalFuel());
+        assertEquals(10.0, record.getTotalCost());
+    }
+
+    @Test
+    void testOnCalculateClick_invalidInput_showsErrorMessage() {
+        tfDistance.setText("abc"); // invalid
+
+        controller.onCalculateClick(new ActionEvent());
+
+        assertEquals("Invalid input", lblResult.getText());
+        verify(calculationService, never()).saveCalculation(any());
+    }
+}
