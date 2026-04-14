@@ -11,4 +11,10 @@ class FuelApplicationTest {
         var url = FuelApplication.class.getResource("fuel-view.fxml");
         assertNotNull(url, "fuel-view.fxml should exist in resources");
     }
+
+    @Test
+    void testMainMethodRuns() {
+        assertDoesNotThrow(() -> FuelApplication.main(new String[]{}));
+    }
+
 }
