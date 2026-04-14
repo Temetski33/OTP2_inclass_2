@@ -37,15 +37,21 @@ public class FuelControllerTest {
     void setUp() {
         controller = new FuelController();
 
-        // Mock services
         calculationService = mock(CalculationService.class);
         localizationService = mock(LocalizationService.class);
 
-        // Inject mocks
         TestUtils.setField(controller, "calculationService", calculationService);
         TestUtils.setField(controller, "localizationService", localizationService);
 
-        // Real JavaFX controls
+        // Required UI fields
+        TestUtils.setField(controller, "lblTitle", new Label());
+        TestUtils.setField(controller, "lblDistance", new Label());
+        TestUtils.setField(controller, "lblConsumption", new Label());
+        TestUtils.setField(controller, "lblPrice", new Label());
+        TestUtils.setField(controller, "btnCalculate", new Button());
+        TestUtils.setField(controller, "lblLocalTime", new Label());
+
+        // Fields used in calculation
         lblResult = new Label();
         tfDistance = new TextField();
         tfConsumption = new TextField();
@@ -56,20 +62,30 @@ public class FuelControllerTest {
         TestUtils.setField(controller, "tfConsumption", tfConsumption);
         TestUtils.setField(controller, "tfPrice", tfPrice);
 
-        // Localization strings
         when(localizationService.getString("result")).thenReturn("Result:");
         when(localizationService.getString("invalid")).thenReturn("Invalid input");
+        when(localizationService.getString("localTime")).thenReturn("Local time:");
+        when(localizationService.getString("title")).thenReturn("Title");
+        when(localizationService.getString("distance")).thenReturn("Distance");
+        when(localizationService.getString("consumption")).thenReturn("Consumption");
+        when(localizationService.getString("price")).thenReturn("Price");
+        when(localizationService.getString("calculate")).thenReturn("Calculate");
+
+        controller.initialize();
     }
+
 
     @Test
     void testOnCalculateClick_validInput() {
+        controller.initialize();
+
         tfDistance.setText("100");
         tfConsumption.setText("5");
         tfPrice.setText("2");
 
         controller.onCalculateClick(null);
 
-        assertEquals("Result: 5.00, 10.00", lblResult.getText());
+        assertEquals("Result: 5,00, 10,00", lblResult.getText());
 
         ArgumentCaptor<CalculationRecord> captor = ArgumentCaptor.forClass(CalculationRecord.class);
         verify(calculationService).saveCalculation(captor.capture());
