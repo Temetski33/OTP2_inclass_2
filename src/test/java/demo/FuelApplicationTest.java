@@ -1,7 +1,5 @@
 package demo;
 
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
