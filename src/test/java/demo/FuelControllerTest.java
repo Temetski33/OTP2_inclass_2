@@ -3,7 +3,6 @@ package demo;
 import demo.model.CalculationRecord;
 import demo.service.CalculationService;
 import demo.service.LocalizationService;
-import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -11,20 +10,24 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
-import java.util.Locale;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-class FuelControllerTest {
+public class FuelControllerTest {
+
+    static {
+        try {
+            javafx.application.Platform.startup(() -> {});
+        } catch (IllegalStateException ignored) {
+            // Toolkit already initialized
+        }
+    }
 
     private FuelController controller;
 
-    // Mocked services
     private CalculationService calculationService;
     private LocalizationService localizationService;
 
-    // UI elements
     private Label lblResult;
     private TextField tfDistance;
     private TextField tfConsumption;
@@ -38,11 +41,11 @@ class FuelControllerTest {
         calculationService = mock(CalculationService.class);
         localizationService = mock(LocalizationService.class);
 
-        // Inject mocks using reflection (because fields are private & final)
+        // Inject mocks
         TestUtils.setField(controller, "calculationService", calculationService);
         TestUtils.setField(controller, "localizationService", localizationService);
 
-        // Fake UI elements
+        // Real JavaFX controls
         lblResult = new Label();
         tfDistance = new TextField();
         tfConsumption = new TextField();
@@ -53,18 +56,18 @@ class FuelControllerTest {
         TestUtils.setField(controller, "tfConsumption", tfConsumption);
         TestUtils.setField(controller, "tfPrice", tfPrice);
 
-        // Default localization strings
+        // Localization strings
         when(localizationService.getString("result")).thenReturn("Result:");
         when(localizationService.getString("invalid")).thenReturn("Invalid input");
     }
 
     @Test
-    void testOnCalculateClick_validInput_updatesLabelAndSavesRecord() {
+    void testOnCalculateClick_validInput() {
         tfDistance.setText("100");
         tfConsumption.setText("5");
         tfPrice.setText("2");
 
-        controller.onCalculateClick(new ActionEvent());
+        controller.onCalculateClick(null);
 
         assertEquals("Result: 5.00, 10.00", lblResult.getText());
 
@@ -80,10 +83,10 @@ class FuelControllerTest {
     }
 
     @Test
-    void testOnCalculateClick_invalidInput_showsErrorMessage() {
-        tfDistance.setText("abc"); // invalid
+    void testOnCalculateClick_invalidInput() {
+        tfDistance.setText("abc");
 
-        controller.onCalculateClick(new ActionEvent());
+        controller.onCalculateClick(null);
 
         assertEquals("Invalid input", lblResult.getText());
         verify(calculationService, never()).saveCalculation(any());
